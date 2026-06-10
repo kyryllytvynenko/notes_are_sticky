@@ -7,9 +7,13 @@ swift build -c release
 
 APP=dist/StickyNotes.app
 rm -rf "$APP"
-mkdir -p "$APP/Contents/MacOS"
+mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 
 cp .build/release/StickyNotes "$APP/Contents/MacOS/StickyNotes"
+
+ICONSET=.build/AppIcon.iconset
+swift Tools/generate_icon.swift "$ICONSET"
+iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/AppIcon.icns"
 
 cat > "$APP/Contents/Info.plist" <<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -26,6 +30,8 @@ cat > "$APP/Contents/Info.plist" <<'EOF'
     <string>StickyNotes</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
     <key>CFBundleShortVersionString</key>
     <string>1.0</string>
     <key>CFBundleVersion</key>
