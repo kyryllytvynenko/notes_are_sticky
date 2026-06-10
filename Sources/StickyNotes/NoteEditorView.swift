@@ -41,6 +41,13 @@ struct NoteEditorView: View {
             footer
         }
         .background(Color(hex: store.colorHex(for: note)))
+        // Hidden button so ⌘↩ confirms the note and closes the editor
+        // (notes save as you type — this just dismisses the window).
+        .background(
+            Button("") { dismiss() }
+                .keyboardShortcut(.return, modifiers: .command)
+                .hidden()
+        )
         // Note backgrounds are always light pastels — force light controls so
         // dark mode doesn't render menu labels and text in white.
         .environment(\.colorScheme, .light)
